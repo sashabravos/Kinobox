@@ -45,7 +45,7 @@ extension UIView {
     public func makeStackView(_ alignment: UIStackView.Alignment,
                               space: CGFloat,
                               distribution: UIStackView.Distribution,
-                              views: [UIView])-> UIStackView {
+                              views: [UIView]) -> UIStackView {
         let stackView = UIStackView()
         stackView.distribution = distribution
         stackView.axis = .vertical

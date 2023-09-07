@@ -58,7 +58,7 @@ final class FilmCell: UITableViewCell {
     private func setupViews() {
         self.backgroundColor = Constants.Color.background
         self.addSubview(stackView)
-            stackView.snp.makeConstraints{ make in
+            stackView.snp.makeConstraints { make in
                 make.top.left.equalToSuperview().offset(Constants.Constraints.stackViewGap)
                 make.bottom.right.equalToSuperview().offset(-Constants.Constraints.stackViewGap)
             }
@@ -85,5 +85,3 @@ final class FilmCell: UITableViewCell {
         )
     }
 }
-
-

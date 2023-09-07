@@ -20,7 +20,6 @@ final class DetailView: UIView {
     
     weak var delegate: DetailViewDelegate?
     
-    
     // MARK: - ImageView
     
     private lazy var filmImageView: UIImageView = {
@@ -57,7 +56,6 @@ final class DetailView: UIView {
                                       views: [releaseTitle, releaseYear, durationTitle, durationTime])
         return stackView
     }()
-    
     
     // MARK: - StackView's labels
     

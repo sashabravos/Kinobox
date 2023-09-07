@@ -90,7 +90,7 @@ final class SearchView: UIView {
         
         self.backgroundColor = Constants.Color.background
         
-        [requestTextField, searchButton, topFilmsButton, tableView,  activityIndicator].forEach {
+        [requestTextField, searchButton, topFilmsButton, tableView, activityIndicator].forEach {
             self.addSubview($0)
         }
     }

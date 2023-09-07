@@ -105,7 +105,6 @@ final class RequestManager {
         }
     }
 
-    
     // MARK: - Private methods
     
     /// Universal function to decode

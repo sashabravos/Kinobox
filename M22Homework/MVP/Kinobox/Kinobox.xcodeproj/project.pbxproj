@@ -26,6 +26,7 @@
 		037D16C82A9A629E000F4AB8 /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D16C72A9A629E000F4AB8 /* ViewController+Extension.swift */; };
 		037D16CA2A9A96C3000F4AB8 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D16C92A9A96C3000F4AB8 /* View+Extension.swift */; };
 		037D16CC2A9AA6CC000F4AB8 /* NetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D16CB2A9AA6CC000F4AB8 /* NetworkModel.swift */; };
+		2A90CDCC9DA250C88DBDF60E /* Pods_Kinobox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 611F3EF9B90766DA9851FDE3 /* Pods_Kinobox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,9 @@
 		037D16C72A9A629E000F4AB8 /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
 		037D16C92A9A96C3000F4AB8 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		037D16CB2A9AA6CC000F4AB8 /* NetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkModel.swift; sourceTree = "<group>"; };
+		611F3EF9B90766DA9851FDE3 /* Pods_Kinobox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kinobox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7FDBDD395165A349D19985D /* Pods-Kinobox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kinobox.release.xcconfig"; path = "Target Support Files/Pods-Kinobox/Pods-Kinobox.release.xcconfig"; sourceTree = "<group>"; };
+		FBD3A455216990FC7866A75E /* Pods-Kinobox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kinobox.debug.xcconfig"; path = "Target Support Files/Pods-Kinobox/Pods-Kinobox.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +61,7 @@
 				037D16C22A9A49E7000F4AB8 /* Kingfisher in Frameworks */,
 				037D166E2A978617000F4AB8 /* SnapKit in Frameworks */,
 				037D16792A97A52A000F4AB8 /* Alamofire in Frameworks */,
+				2A90CDCC9DA250C88DBDF60E /* Pods_Kinobox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +73,8 @@
 			children = (
 				037D16542A978321000F4AB8 /* Kinobox */,
 				037D16532A978321000F4AB8 /* Products */,
+				10DDCD3858B26DC75CAB3118 /* Pods */,
+				9028EFB7D8BA038BBEFDC692 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -159,6 +166,23 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		10DDCD3858B26DC75CAB3118 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FBD3A455216990FC7866A75E /* Pods-Kinobox.debug.xcconfig */,
+				E7FDBDD395165A349D19985D /* Pods-Kinobox.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		9028EFB7D8BA038BBEFDC692 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				611F3EF9B90766DA9851FDE3 /* Pods_Kinobox.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -166,6 +190,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 037D16662A978323000F4AB8 /* Build configuration list for PBXNativeTarget "Kinobox" */;
 			buildPhases = (
+				034A342D2AAA345B006B8CDA /* ShellScript */,
+				4B71ACB929FC8810FD5065D8 /* [CP] Check Pods Manifest.lock */,
 				037D164E2A978321000F4AB8 /* Sources */,
 				037D164F2A978321000F4AB8 /* Frameworks */,
 				037D16502A978321000F4AB8 /* Resources */,
@@ -234,6 +260,49 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		034A342D2AAA345B006B8CDA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+		4B71ACB929FC8810FD5065D8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Kinobox-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		037D164E2A978321000F4AB8 /* Sources */ = {
@@ -394,6 +463,7 @@
 		};
 		037D16672A978323000F4AB8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FBD3A455216990FC7866A75E /* Pods-Kinobox.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -422,6 +492,7 @@
 		};
 		037D16682A978323000F4AB8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7FDBDD395165A349D19985D /* Pods-Kinobox.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
