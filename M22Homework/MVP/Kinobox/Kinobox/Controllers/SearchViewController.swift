@@ -41,7 +41,7 @@ final class SearchViewController: UIViewController, SearchViewDelegate {
             self?.searchView.activityIndicator.startAnimating()
         }
         
-        if let word = searchView.requestTextField.text {
+        if let word = searchView.requestSearchBar.text {
             keyword = word.lowercased()
         }
         

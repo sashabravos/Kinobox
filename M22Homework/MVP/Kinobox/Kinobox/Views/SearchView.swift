@@ -24,14 +24,14 @@ final class SearchView: UIView {
     
     // MARK: - UI Elements
     
-    lazy var requestTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Введите слово для поиска"
-        textField.textColor = Constants.Color.darkText
-        textField.font = Constants.Font.secondaryFont
-        textField.borderStyle = .roundedRect
-        textField.clearButtonMode = .always
-        return textField
+    lazy var requestSearchBar: UISearchBar = {
+        let search = UISearchBar()
+        search.placeholder = "Введите слово для поиска"
+        search.barTintColor = Constants.Color.background
+        search.searchTextField.textColor = Constants.Color.darkText
+        search.searchTextField.font = Constants.Font.secondaryFont
+        search.searchTextField.clearButtonMode = .always
+        return search
     }()
     
     lazy var searchButton: UIButton = {
@@ -86,25 +86,24 @@ final class SearchView: UIView {
     private func setSubviews() {
         tableView.dataSource = self
         tableView.delegate = self
-        requestTextField.delegate = self
+        requestSearchBar.delegate = self
         
         self.backgroundColor = Constants.Color.background
         
-        [requestTextField, searchButton, topFilmsButton, tableView, activityIndicator].forEach {
+        [requestSearchBar, searchButton, topFilmsButton, tableView, activityIndicator].forEach {
             self.addSubview($0)
         }
     }
     
     private func layoutSubViews() {
-        requestTextField.snp.makeConstraints { make in
-            make.left.equalTo(Constants.Constraints.smallSideGap)
-            make.right.equalTo(-Constants.Constraints.smallSideGap)
+        requestSearchBar.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
             make.topMargin.equalToSuperview().offset(Constants.Constraints.bigVerticalGap)
         }
         
         searchButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(requestTextField.snp.bottom).offset(Constants.Constraints.smallVerticalGap)
+            make.top.equalTo(requestSearchBar.snp.bottom).offset(Constants.Constraints.smallVerticalGap)
             make.width.greaterThanOrEqualTo(Constants.Constraints.searchButtonWidth)
         }
         
@@ -164,9 +163,12 @@ extension SearchView: UITableViewDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension SearchView: UITextFieldDelegate {
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        activityIndicator.stopAnimating()
-        return true
+extension SearchView: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // search by every letter
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // press search button on keyboard
     }
 }
