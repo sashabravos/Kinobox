@@ -1,30 +1,25 @@
 //
-//  SearchViews.swift
+//  SearchListView.swift
 //  Kinobox
 //
-//  Created by Александра Кострова on 26.08.2023.
+//  Created by Александра Кострова on 09.09.2023.
 //
 
 import UIKit
 import SnapKit
+import Alamofire
 import Kingfisher
 
-// MARK: - SearchViewDelegate
-
-protocol SearchViewDelegate: AnyObject {
-}
-
-final class SearchView: UIView {
+final class SearchListView: UIViewController {
     
-    // MARK: - Instants
+    // MARK: - Properties
     
-    weak var delegate: SearchViewDelegate?
-    lazy var filmsArray = [Film]()
-    lazy var sectionTitle = "Section title"
+    lazy var keyword = ""
+    private let presenter: SearchListPresenterProtocol = SearchListPresenter()
     
     // MARK: - UI Elements
     
-    lazy var requestSearchBar: UISearchBar = {
+    private lazy var requestSearchBar: UISearchBar = {
         let search = UISearchBar()
         search.placeholder = "Введите слово для поиска"
         search.barTintColor = Constants.Color.background
@@ -34,8 +29,9 @@ final class SearchView: UIView {
         return search
     }()
     
-    lazy var searchButton: UIButton = {
+    private lazy var searchButton: UIButton = {
         let button = UIButton()
+        button.setTitle("Поиск", for: .normal)
         button.setTitleColor(Constants.Color.lightText, for: .normal)
         button.backgroundColor = Constants.Color.searchButton
         button.titleLabel?.font = Constants.Font.primaryFont
@@ -43,12 +39,13 @@ final class SearchView: UIView {
         button.layer.borderColor = Constants.Color.borderLine
         button.layer.borderWidth = Constants.BorderLine.frameWidth
         button.layer.cornerRadius = Constants.CornerRadius.big
-        button.setTitle("Поиск", for: .normal)
+        button.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    lazy var topFilmsButton: UIButton = {
+    private lazy var topFilmsButton: UIButton = {
         let button = UIButton()
+        button.setTitle("Популярные фильмы", for: .normal)
         button.setTitleColor(Constants.Color.lightText, for: .normal)
         button.backgroundColor = Constants.Color.topFilmsButton
         button.titleLabel?.font = Constants.Font.primaryFont
@@ -56,29 +53,28 @@ final class SearchView: UIView {
         button.layer.borderColor = Constants.Color.borderLine
         button.layer.borderWidth = Constants.BorderLine.frameWidth
         button.layer.cornerRadius = Constants.CornerRadius.big
-        button.setTitle("Популярные фильмы", for: .normal)
+        button.addTarget(self, action: #selector(popularButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    lazy var tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = Constants.Color.background
-        tableView.register(FilmCell.self, forCellReuseIdentifier: FilmCell.identifier)
+        tableView.register(FilmCellView.self, forCellReuseIdentifier: FilmCellView.identifier)
         return tableView
     }()
     
-    lazy var activityIndicator = UIActivityIndicatorView()
+    private lazy var activityIndicator = UIActivityIndicatorView()
     
-    // MARK: - Initialisation
+    // MARK: - Lifecycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         setSubviews()
         layoutSubViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        presenter.setView(self)
+        presenter.loadTopMovies()
     }
     
     // MARK: - Private Methods
@@ -88,10 +84,10 @@ final class SearchView: UIView {
         tableView.delegate = self
         requestSearchBar.delegate = self
         
-        self.backgroundColor = Constants.Color.background
+        view.backgroundColor = Constants.Color.background
         
         [requestSearchBar, searchButton, topFilmsButton, tableView, activityIndicator].forEach {
-            self.addSubview($0)
+            view.addSubview($0)
         }
     }
     
@@ -123,52 +119,107 @@ final class SearchView: UIView {
             make.centerX.centerY.equalTo(tableView.snp.center)
         }
     }
+    
+    // MARK: - Buttons Actions
+    
+    @objc func searchButtonTapped() {
+        presenter.searchButtonTapped()
+    }
+    
+    @objc func popularButtonTapped() {
+        presenter.popularButtonTapped()
+    }
+    // MARK: - Data separation
+    
+    private func updateTableView(with films: [Film],
+                                 sender: UIButton) {
+        presenter.updateTableView(with: films,
+                                  sender: sender)
+    }
 }
 
 // MARK: - UITableViewDataSource
 
-extension SearchView: UITableViewDataSource {
+extension SearchListView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        filmsArray.count
+        presenter.numberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitle
+        presenter.titleForHeaderInSection()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let filmCell = tableView.dequeueReusableCell(
-            withIdentifier: FilmCell.identifier,
-            for: indexPath) as! FilmCell
+            withIdentifier: FilmCellView.identifier,
+            for: indexPath) as! FilmCellView
         
-        let film = filmsArray[indexPath.row]
-        filmCell.configure(with: film)
+        if let film = presenter.getFilm(for: indexPath) {
+            filmCell.configure(with: film)
+        }
         return filmCell
     }
 }
 
 // MARK: - UITableViewDelegate
 
-extension SearchView: UITableViewDelegate {
+extension SearchListView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedFilm = filmsArray[indexPath.row]
-        let detailInfo = DetailViewController()
-        detailInfo.selectedFilmID = selectedFilm.filmId
-        if let parentViewController = parentViewController {
-            parentViewController.present(detailInfo, animated: true)
-        }
+        let selectedFilm = presenter.getFilm(for: indexPath)
+        let detailInfo = DetailInfoView()
+        detailInfo.selectedFilmID = selectedFilm?.filmId
+        detailInfo.present(detailInfo, animated: true)
     }
 }
 
-// MARK: - UITextFieldDelegate
+// MARK: - UISearchBarDelegate
 
-extension SearchView: UISearchBarDelegate {
+extension SearchListView: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // search by every letter
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // press search button on keyboard
+    }
+}
+
+extension SearchListView: SearchListViewProtocol {
+    
+    var searchBar: UISearchBar {
+        return requestSearchBar
+    }
+
+    var requestButton: UIButton {
+        searchButton
+    }
+
+    var topMovieButton: UIButton {
+        topFilmsButton
+    }
+
+    func getRequestButton() -> UIButton {
+        searchButton
+    }
+    
+    func getTopMovieButton() -> UIButton {
+        topFilmsButton
+    }
+    
+    func reloadTable() {
+        tableView.reloadData()
+    }
+    
+    func viewEndEditing() {
+        view.endEditing(true)
+    }
+    
+    func loaderStart() {
+        activityIndicator.startAnimating()
+    }
+    
+    func loaderStop() {
+        activityIndicator.stopAnimating()
     }
 }

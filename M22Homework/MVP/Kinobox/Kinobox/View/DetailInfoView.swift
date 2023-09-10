@@ -1,26 +1,22 @@
 //
-//  DetailView.swift
+//  DetailInfoView.swift
 //  Kinobox
 //
-//  Created by Александра Кострова on 26.08.2023.
+//  Created by Александра Кострова on 09.09.2023.
 //
 
 import UIKit
 import SnapKit
 import Kingfisher
 
-// MARK: - DetailViewDelegate
-
-protocol DetailViewDelegate: AnyObject {
-}
-
-final class DetailView: UIView {
+final class DetailInfoView: UIViewController {
     
-    // MARK: - Instants
+    // MARK: - Properties
     
-    weak var delegate: DetailViewDelegate?
+    private let presenter: DetailInfoPresenterProtocol = DetailInfoPresenter()
+    var selectedFilmID: Int?
     
-    // MARK: - ImageView
+    // MARK: - Film Image
     
     private lazy var filmImageView: UIImageView = {
         let imageView = UIImageView()
@@ -89,10 +85,10 @@ final class DetailView: UIView {
         return label
     }()
     private lazy var descriptionLabel: UILabel = {
-    let label = makeSecondaryLabel()
-    label.textColor = .black
-    return label
-}()
+        let label = makeSecondaryLabel()
+        label.textColor = .black
+        return label
+    }()
     private lazy var releaseTitle: UILabel = {
         let label = makeSecondaryLabel(text: "Год производства")
         return label
@@ -112,54 +108,31 @@ final class DetailView: UIView {
         return label
     }()
     
-    // MARK: - Initialisation
+    // MARK: - Lifecycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        loadInfo()
+        setupView()
         layoutSubViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Public Methods
-    
-    public func configure(with model: FilmInfo) {
-        
-        if let ratingRu = model.ratingKinopoisk,
-        let ratingWorld = model.ratingImdb,
-           let header = model.nameRu,
-           let subHeader = model.nameOriginal,
-           let description = model.description {
-            kinopoiskRateLabel.text = "\(ratingRu)"
-            imdbRateLabel.text = "\(ratingWorld)"
-            headerLabel.text = header
-            subHeaderLabel.text = subHeader
-            descriptionLabel.text = description
-        }
-        
-        releaseYear.text = "\(model.year)"
-        durationTime.text = "\(model.filmLength)"
-        
-        let imageURL = URL(string: model.posterUrl ?? String())
-        filmImageView.kf.indicatorType = .activity
-        filmImageView.kf.setImage(
-            with: imageURL,
-            options: [
-                .scaleFactor(UIScreen.main.scale),
-                .cacheOriginalImage
-                ]
-            )
     }
     
     // MARK: - Private Methods
     
-    private func layoutSubViews() {
-        self.backgroundColor = Constants.Color.background
+    private func loadInfo() {
+        presenter.loadInfo()
+    }
+    
+    private func setupView() {
+        presenter.setView(self)
+        view.backgroundColor = Constants.Color.background
         [filmImageView, rateStackView, mainStackView, descriptionLabel, lowStackView].forEach {
-            self.addSubview($0)
+            view.addSubview($0)
         }
+    }
+    
+    private func layoutSubViews() {
         
         filmImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(Constants.Constraints.smallSideGap)
@@ -190,5 +163,38 @@ final class DetailView: UIView {
             make.bottom.equalToSuperview().offset(-Constants.Constraints.bigVerticalGap)
             make.height.equalTo(Constants.Constraints.lowSVHeight)
         }
+    }
+}
+
+// MARK: - DetailInfoViewProtocol
+
+extension DetailInfoView: DetailInfoViewProtocol {
+        
+    func configure(with model: FilmInfo) {
+        
+        if let ratingRu = model.ratingKinopoisk,
+           let ratingWorld = model.ratingImdb,
+           let header = model.nameRu,
+           let subHeader = model.nameOriginal,
+           let description = model.description {
+            kinopoiskRateLabel.text = "\(ratingRu)"
+            imdbRateLabel.text = "\(ratingWorld)"
+            headerLabel.text = header
+            subHeaderLabel.text = subHeader
+            descriptionLabel.text = description
+        }
+        
+        releaseYear.text = "\(model.year)"
+        durationTime.text = "\(model.filmLength)"
+        
+        let imageURL = URL(string: model.posterUrl ?? String())
+        filmImageView.kf.indicatorType = .activity
+        filmImageView.kf.setImage(
+            with: imageURL,
+            options: [
+                .scaleFactor(UIScreen.main.scale),
+                .cacheOriginalImage
+            ]
+        )
     }
 }

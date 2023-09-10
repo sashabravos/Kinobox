@@ -1,20 +1,23 @@
 //
-//  FilmCell.swift
+//  FilmCellView.swift
 //  Kinobox
 //
-//  Created by Александра Кострова on 26.08.2023.
+//  Created by Александра Кострова on 09.09.2023.
 //
 
 import UIKit
 import SnapKit
 import Kingfisher
 
-final class FilmCell: UITableViewCell {
-        
-    // MARK: - Properties
-
+final class FilmCellView: UITableViewCell {
+    
+// MARK: - Properties
+    
     static let identifier = "FilmCell"
-
+    private let presenter: FilmCellPresenterProtocol = FilmCellPresenter()
+    
+// MARK: - UI Elements
+    
     private lazy var filmImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = Constants.CornerRadius.small
@@ -27,7 +30,6 @@ final class FilmCell: UITableViewCell {
     private lazy var filmName: UILabel = {
         let label = UILabel()
         label.font = Constants.Font.primaryFont
-        label.text = "Apple"
         label.textColor = Constants.Color.darkText
         return label
     }()
@@ -41,40 +43,48 @@ final class FilmCell: UITableViewCell {
         stackView.addArrangedSubviews([filmImageView, filmName])
         return stackView
     }()
-
-    // MARK: - Initialisers
-
+    
+// MARK: - Initialisers
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
+        setupCell()
+        setupSubviews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Private Methods
-
-    private func setupViews() {
-        self.backgroundColor = Constants.Color.background
+// MARK: - Private Methods
+    
+    private func setupCell() {
+        presenter.setView(self)
         self.addSubview(stackView)
-            stackView.snp.makeConstraints { make in
-                make.top.left.equalToSuperview().offset(Constants.Constraints.stackViewGap)
-                make.bottom.right.equalToSuperview().offset(-Constants.Constraints.stackViewGap)
-            }
-            
+        self.backgroundColor = Constants.Color.background
+    }
+    
+    private func setupSubviews() {
+        
+        stackView.snp.makeConstraints { make in
+            make.top.left.equalToSuperview().offset(Constants.Constraints.stackViewGap)
+            make.bottom.right.equalToSuperview().offset(-Constants.Constraints.stackViewGap)
+        }
+        
         filmImageView.snp.makeConstraints { make in
             make.height.equalTo(Constants.Constraints.cellImageHeight)
             make.width.equalTo(Constants.Constraints.cellImageWidth)
         }
     }
-    
-    // MARK: - Public Methods
+}
 
-    public func configure(with model: Film) {
+// MARK: - FilmCellViewProtocol
+
+extension FilmCellView: FilmCellViewProtocol {
+    func configure(with model: Film) {
         filmName.text = model.nameRu
         let imageURL = URL(string: model.posterUrl ?? String())
-
+        
         filmImageView.kf.indicatorType = .activity
         filmImageView.kf.setImage(
             with: imageURL,

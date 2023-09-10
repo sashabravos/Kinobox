@@ -1,13 +1,19 @@
 //
-//  NetworkModel.swift
+//  SearchListModel.swift
 //  Kinobox
 //
-//  Created by Александра Кострова on 27.08.2023.
+//  Created by Александра Кострова on 09.09.2023.
 //
 
 import Foundation
 
-struct SearchModel: Decodable {
+struct SearchListModel {
+    lazy var filmsArray = [Film]()
+    lazy var sectionTitle = "Section title"
+    let searchFilmModel: SearchFilmModel
+}
+
+struct SearchFilmModel: Decodable {
     let keyword: String?
     let pagesCount: Int?
     let films: [Film]
