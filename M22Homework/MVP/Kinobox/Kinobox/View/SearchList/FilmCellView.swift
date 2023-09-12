@@ -14,7 +14,7 @@ final class FilmCellView: UITableViewCell {
 // MARK: - Properties
     
     static let identifier = "FilmCell"
-    private let presenter: FilmCellPresenterProtocol = FilmCellPresenter()
+    let presenter: FilmCellPresenterProtocol = FilmCellPresenter()
     
 // MARK: - UI Elements
     

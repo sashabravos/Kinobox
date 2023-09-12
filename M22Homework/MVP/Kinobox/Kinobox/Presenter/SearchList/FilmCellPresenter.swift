@@ -11,13 +11,15 @@ import Foundation
 
 protocol FilmCellViewProtocol: AnyObject {
 
-    func configure(with model: Film)
+    func configure(with filmModel: Film)
 }
 
 // MARK: - FilmCellPresenterProtocol
 
 protocol FilmCellPresenterProtocol: AnyObject {
     func setView(_ view: FilmCellViewProtocol)
+    
+    func configureCell(with model: Film)
 }
 
 // MARK: - FilmCellPresenter
@@ -25,7 +27,6 @@ protocol FilmCellPresenterProtocol: AnyObject {
 final class FilmCellPresenter: FilmCellPresenterProtocol {
     
     private weak var view: FilmCellViewProtocol?
-    private var model: FilmCellModel?
     
     func setView(_ view: FilmCellViewProtocol) {
         self.view = view

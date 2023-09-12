@@ -7,8 +7,6 @@
 
 import UIKit
 import SnapKit
-import Alamofire
-import Kingfisher
 
 final class SearchListView: UIViewController {
     
@@ -123,18 +121,19 @@ final class SearchListView: UIViewController {
     // MARK: - Buttons Actions
     
     @objc func searchButtonTapped() {
-        presenter.searchButtonTapped()
+        view.endEditing(true)
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.startAnimating()
+        }
+        presenter.searchButtonTapped(with: keyword)
     }
     
     @objc func popularButtonTapped() {
+        view.endEditing(true)
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.startAnimating()
+        }
         presenter.popularButtonTapped()
-    }
-    // MARK: - Data separation
-    
-    private func updateTableView(with films: [Film],
-                                 sender: UIButton) {
-        presenter.updateTableView(with: films,
-                                  sender: sender)
     }
 }
 
@@ -155,9 +154,8 @@ extension SearchListView: UITableViewDataSource {
             withIdentifier: FilmCellView.identifier,
             for: indexPath) as! FilmCellView
         
-        if let film = presenter.getFilm(for: indexPath) {
-            filmCell.configure(with: film)
-        }
+        let film = presenter.getFilm(for: indexPath)
+        filmCell.presenter.configureCell(with: film)
         return filmCell
     }
 }
@@ -168,8 +166,8 @@ extension SearchListView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedFilm = presenter.getFilm(for: indexPath)
         let detailInfo = DetailInfoView()
-        detailInfo.selectedFilmID = selectedFilm?.filmId
-        detailInfo.present(detailInfo, animated: true)
+        detailInfo.selectedFilmID = selectedFilm.filmId
+        self.present(detailInfo, animated: true)
     }
 }
 
@@ -178,45 +176,24 @@ extension SearchListView: UITableViewDelegate {
 extension SearchListView: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // search by every letter
+        keyword = searchText.lowercased()
+        print(keyword)
+        presenter.searchButtonTapped(with: keyword)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // press search button on keyboard
+        if let word = searchBar.text {
+            keyword = word.lowercased()
+            presenter.searchButtonTapped(with: keyword)
+        }
     }
 }
 
 extension SearchListView: SearchListViewProtocol {
     
-    var searchBar: UISearchBar {
-        return requestSearchBar
-    }
-
-    var requestButton: UIButton {
-        searchButton
-    }
-
-    var topMovieButton: UIButton {
-        topFilmsButton
-    }
-
-    func getRequestButton() -> UIButton {
-        searchButton
-    }
-    
-    func getTopMovieButton() -> UIButton {
-        topFilmsButton
-    }
-    
     func reloadTable() {
         tableView.reloadData()
-    }
-    
-    func viewEndEditing() {
-        view.endEditing(true)
-    }
-    
-    func loaderStart() {
-        activityIndicator.startAnimating()
     }
     
     func loaderStop() {

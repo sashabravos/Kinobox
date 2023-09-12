@@ -9,13 +9,11 @@
 /* Begin PBXBuildFile section */
 		037D16562A978321000F4AB8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D16552A978321000F4AB8 /* AppDelegate.swift */; };
 		037D16582A978321000F4AB8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D16572A978321000F4AB8 /* SceneDelegate.swift */; };
-		037D165D2A978321000F4AB8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 037D165B2A978321000F4AB8 /* Main.storyboard */; };
 		037D16622A978323000F4AB8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 037D16602A978323000F4AB8 /* LaunchScreen.storyboard */; };
 		037D166E2A978617000F4AB8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 037D166D2A978617000F4AB8 /* SnapKit */; };
 		037D16712A978892000F4AB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 037D16702A978892000F4AB8 /* Assets.xcassets */; };
 		037D16732A97889F000F4AB8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D16722A97889F000F4AB8 /* Constants.swift */; };
 		037D16792A97A52A000F4AB8 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 037D16782A97A52A000F4AB8 /* Alamofire */; };
-		037D167E2A97B205000F4AB8 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D167D2A97B205000F4AB8 /* NetworkManager.swift */; };
 		037D16C22A9A49E7000F4AB8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 037D16C12A9A49E7000F4AB8 /* Kingfisher */; };
 		037D16C42A9A4AF4000F4AB8 /* StackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D16C32A9A4AF4000F4AB8 /* StackView+Extension.swift */; };
 		037D16C82A9A629E000F4AB8 /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037D16C72A9A629E000F4AB8 /* ViewController+Extension.swift */; };
@@ -27,7 +25,8 @@
 		03D339662AACFAD30013B450 /* DetailInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D339652AACFAD30013B450 /* DetailInfoModel.swift */; };
 		03D3396B2AACFC630013B450 /* FilmCellPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3396A2AACFC630013B450 /* FilmCellPresenter.swift */; };
 		03D3396D2AACFC750013B450 /* FilmCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3396C2AACFC750013B450 /* FilmCellView.swift */; };
-		03D3396F2AACFC840013B450 /* FilmCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3396E2AACFC840013B450 /* FilmCellModel.swift */; };
+		03F735DB2AB072C2005E62FA /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F735DA2AB072C2005E62FA /* SearchModel.swift */; };
+		03F735DD2AB08120005E62FA /* NetworkInstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F735DC2AB08120005E62FA /* NetworkInstants.swift */; };
 		2A90CDCC9DA250C88DBDF60E /* Pods_Kinobox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 611F3EF9B90766DA9851FDE3 /* Pods_Kinobox.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,12 +34,10 @@
 		037D16522A978321000F4AB8 /* Kinobox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kinobox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		037D16552A978321000F4AB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		037D16572A978321000F4AB8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		037D165C2A978321000F4AB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		037D16612A978323000F4AB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		037D16632A978323000F4AB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		037D16702A978892000F4AB8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		037D16722A97889F000F4AB8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		037D167D2A97B205000F4AB8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		037D16C32A9A4AF4000F4AB8 /* StackView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StackView+Extension.swift"; sourceTree = "<group>"; };
 		037D16C72A9A629E000F4AB8 /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
 		03D3395B2AACFA610013B450 /* SearchListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListPresenter.swift; sourceTree = "<group>"; };
@@ -51,7 +48,8 @@
 		03D339652AACFAD30013B450 /* DetailInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInfoModel.swift; sourceTree = "<group>"; };
 		03D3396A2AACFC630013B450 /* FilmCellPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmCellPresenter.swift; sourceTree = "<group>"; };
 		03D3396C2AACFC750013B450 /* FilmCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmCellView.swift; sourceTree = "<group>"; };
-		03D3396E2AACFC840013B450 /* FilmCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmCellModel.swift; sourceTree = "<group>"; };
+		03F735DA2AB072C2005E62FA /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
+		03F735DC2AB08120005E62FA /* NetworkInstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInstants.swift; sourceTree = "<group>"; };
 		611F3EF9B90766DA9851FDE3 /* Pods_Kinobox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kinobox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7FDBDD395165A349D19985D /* Pods-Kinobox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kinobox.release.xcconfig"; path = "Target Support Files/Pods-Kinobox/Pods-Kinobox.release.xcconfig"; sourceTree = "<group>"; };
 		FBD3A455216990FC7866A75E /* Pods-Kinobox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kinobox.debug.xcconfig"; path = "Target Support Files/Pods-Kinobox/Pods-Kinobox.debug.xcconfig"; sourceTree = "<group>"; };
@@ -94,15 +92,11 @@
 			isa = PBXGroup;
 			children = (
 				037D16692A9783D4000F4AB8 /* AppResourses */,
-				037D167A2A97AA4B000F4AB8 /* Network */,
-				03D3395A2AACFA420013B450 /* Presenter */,
-				03D339592AACFA3B0013B450 /* View */,
 				03D339582AACFA2E0013B450 /* Model */,
-				037D16742A978D7B000F4AB8 /* Extensions */,
-				037D16722A97889F000F4AB8 /* Constants.swift */,
-				037D16702A978892000F4AB8 /* Assets.xcassets */,
+				03D339592AACFA3B0013B450 /* View */,
+				03D3395A2AACFA420013B450 /* Presenter */,
+				03F735DE2AB0828D005E62FA /* Sourses */,
 				037D16632A978323000F4AB8 /* Info.plist */,
-				037D166B2A9783FB000F4AB8 /* Storyboards */,
 			);
 			path = Kinobox;
 			sourceTree = "<group>";
@@ -119,7 +113,6 @@
 		037D166B2A9783FB000F4AB8 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				037D165B2A978321000F4AB8 /* Main.storyboard */,
 				037D16602A978323000F4AB8 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
@@ -130,16 +123,9 @@
 			children = (
 				037D16C32A9A4AF4000F4AB8 /* StackView+Extension.swift */,
 				037D16C72A9A629E000F4AB8 /* ViewController+Extension.swift */,
+				037D16702A978892000F4AB8 /* Assets.xcassets */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		037D167A2A97AA4B000F4AB8 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				037D167D2A97B205000F4AB8 /* NetworkManager.swift */,
-			);
-			path = Network;
 			sourceTree = "<group>";
 		};
 		03D339582AACFA2E0013B450 /* Model */ = {
@@ -190,10 +176,21 @@
 		03D339692AACFC490013B450 /* SearchList */ = {
 			isa = PBXGroup;
 			children = (
-				03D3396E2AACFC840013B450 /* FilmCellModel.swift */,
+				03F735DA2AB072C2005E62FA /* SearchModel.swift */,
 				03D339632AACFAB80013B450 /* SearchListModel.swift */,
 			);
 			path = SearchList;
+			sourceTree = "<group>";
+		};
+		03F735DE2AB0828D005E62FA /* Sourses */ = {
+			isa = PBXGroup;
+			children = (
+				037D16722A97889F000F4AB8 /* Constants.swift */,
+				03F735DC2AB08120005E62FA /* NetworkInstants.swift */,
+				037D16742A978D7B000F4AB8 /* Extensions */,
+				037D166B2A9783FB000F4AB8 /* Storyboards */,
+			);
+			path = Sourses;
 			sourceTree = "<group>";
 		};
 		10DDCD3858B26DC75CAB3118 /* Pods */ = {
@@ -285,7 +282,6 @@
 			files = (
 				037D16622A978323000F4AB8 /* LaunchScreen.storyboard in Resources */,
 				037D16712A978892000F4AB8 /* Assets.xcassets in Resources */,
-				037D165D2A978321000F4AB8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,18 +335,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03D3396F2AACFC840013B450 /* FilmCellModel.swift in Sources */,
 				03D3396D2AACFC750013B450 /* FilmCellView.swift in Sources */,
 				037D16562A978321000F4AB8 /* AppDelegate.swift in Sources */,
 				03D3395E2AACFA7A0013B450 /* DetailInfoPresenter.swift in Sources */,
 				03D339662AACFAD30013B450 /* DetailInfoModel.swift in Sources */,
 				03D3395C2AACFA610013B450 /* SearchListPresenter.swift in Sources */,
-				037D167E2A97B205000F4AB8 /* NetworkManager.swift in Sources */,
 				037D16582A978321000F4AB8 /* SceneDelegate.swift in Sources */,
+				03F735DB2AB072C2005E62FA /* SearchModel.swift in Sources */,
 				037D16C82A9A629E000F4AB8 /* ViewController+Extension.swift in Sources */,
 				037D16732A97889F000F4AB8 /* Constants.swift in Sources */,
 				03D339602AACFA9B0013B450 /* SearchListView.swift in Sources */,
 				03D339622AACFAAA0013B450 /* DetailInfoView.swift in Sources */,
+				03F735DD2AB08120005E62FA /* NetworkInstants.swift in Sources */,
 				03D3396B2AACFC630013B450 /* FilmCellPresenter.swift in Sources */,
 				03D339642AACFAB80013B450 /* SearchListModel.swift in Sources */,
 				037D16C42A9A4AF4000F4AB8 /* StackView+Extension.swift in Sources */,
@@ -360,14 +356,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		037D165B2A978321000F4AB8 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				037D165C2A978321000F4AB8 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		037D16602A978323000F4AB8 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -506,7 +494,6 @@
 				INFOPLIST_FILE = Kinobox/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -535,7 +522,6 @@
 				INFOPLIST_FILE = Kinobox/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

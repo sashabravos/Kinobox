@@ -13,8 +13,8 @@ final class DetailInfoView: UIViewController {
     
     // MARK: - Properties
     
-    private let presenter: DetailInfoPresenterProtocol = DetailInfoPresenter()
     var selectedFilmID: Int?
+    private let presenter: DetailInfoPresenterProtocol = DetailInfoPresenter()
     
     // MARK: - Film Image
     
@@ -116,12 +116,15 @@ final class DetailInfoView: UIViewController {
         loadInfo()
         setupView()
         layoutSubViews()
+        presenter.setView(self)
     }
     
     // MARK: - Private Methods
     
     private func loadInfo() {
-        presenter.loadInfo()
+        if let filmID = selectedFilmID {
+            presenter.loadInfo(for: filmID)
+        }
     }
     
     private func setupView() {

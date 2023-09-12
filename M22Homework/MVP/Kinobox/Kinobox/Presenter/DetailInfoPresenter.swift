@@ -19,9 +19,10 @@ protocol DetailInfoViewProtocol: AnyObject {
 // MARK: - DetailInfoPresenterProtocol
 
 protocol DetailInfoPresenterProtocol: AnyObject {
+    
     func setView(_ view: DetailInfoViewProtocol)
     
-    func loadInfo()
+    func loadInfo(for selectedFilm: Int)
 }
 
 // MARK: - DetailInfoPresenter
@@ -29,7 +30,7 @@ protocol DetailInfoPresenterProtocol: AnyObject {
 final class DetailInfoPresenter: DetailInfoPresenterProtocol {
     
     private weak var view: DetailInfoViewProtocol?
-    private var model: DetailInfoModel?
+    private var model = DetailInfoModel()
     
     func setView(_ view: DetailInfoViewProtocol) {
         self.view = view
@@ -39,8 +40,8 @@ final class DetailInfoPresenter: DetailInfoPresenterProtocol {
         view?.configure(with: model)
     }
     
-    func loadInfo() {
-        RequestManager.shared.getFilmInfo(id: view?.selectedFilmID ?? 1) { (result: Result<FilmInfo, Error>) in
+    func loadInfo(for selectedFilm: Int) {
+        model.getFilmInfo(id: selectedFilm) { (result: Result<FilmInfo, Error>) in
             switch result {
             case .success(let film):
                 DispatchQueue.main.async { [weak self] in

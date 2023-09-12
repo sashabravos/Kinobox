@@ -13,14 +13,7 @@ protocol SearchListViewProtocol: AnyObject {
     
     var keyword: String { get set }
     
-    var searchBar: UISearchBar { get }
-    var requestButton: UIButton { get }
-    var topMovieButton: UIButton { get }
-    
     func reloadTable()
-    func viewEndEditing()
-    
-    func loaderStart()
     func loaderStop()
 }
 
@@ -28,28 +21,29 @@ protocol SearchListViewProtocol: AnyObject {
 
 protocol SearchListPresenterProtocol: AnyObject {
     
+    var filmsArray: [Film] { get set }
+    
     /// Set view
     func setView(_ view: SearchListViewProtocol)
     
-    /// Load top 250 movies
+    /// Load top 100 movies
     func loadTopMovies()
     
     /// Search button action
-    func searchButtonTapped()
+    func searchButtonTapped(with keyword: String)
     
     /// Popular button action
     func popularButtonTapped()
     
-    /// Update tableView info
-    func updateTableView(with films: [Film],
-                         sender: UIButton)
     /// Set value to numberOfRowsInSection
     func numberOfRowsInSection() -> Int
     
     /// Set value to titleForHeaderInSection
-    func titleForHeaderInSection() -> String?
+    func titleForHeaderInSection() -> String
     
-    func getFilm(for indexPath: IndexPath) -> Film?
+    func getFilm(for indexPath: IndexPath) -> Film
+    
+    func updateTableView(with films: [Film])
     
 }
 
@@ -58,7 +52,9 @@ protocol SearchListPresenterProtocol: AnyObject {
 final class SearchListPresenter: SearchListPresenterProtocol {
     
     private weak var view: SearchListViewProtocol?
-    private var model: SearchListModel?
+    let model = SearchListModel()
+    
+    var filmsArray: [Film] = []
     
     func setView(_ view: SearchListViewProtocol) {
         self.view = view
@@ -68,52 +64,52 @@ final class SearchListPresenter: SearchListPresenterProtocol {
         getTopMovies()
     }
     
-    func searchButtonTapped() {
-        getSearchResult()
+    func searchButtonTapped(with keyword: String) {
+        getSearchResult(by: keyword)
     }
     
     func popularButtonTapped() {
         getTopMovies()
     }
     
-    func updateTableView(with films: [Film],
-                         sender: UIButton) {
-        updateInfo(with: films, sender: sender)
+    func updateTableView(with films: [Film]) {
+        updateInfo(with: films)
     }
     
     func numberOfRowsInSection() -> Int {
-        model?.filmsArray.count ?? 0
+        return filmsArray.count
     }
     
-    func titleForHeaderInSection() -> String? {
-        model?.sectionTitle
+    func titleForHeaderInSection() -> String {
+        return model.sectionTitle
     }
     
-    func getFilm(for indexPath: IndexPath) -> Film? {
-        model?.filmsArray[indexPath.row]
-        
+    func getFilm(for indexPath: IndexPath) -> Film {
+        return filmsArray[indexPath.row]
     }
     
-    private func getSearchResult() {
+    func updateInfo(with films: [Film]) {
+        filmsArray.removeAll()
+        filmsArray.append(contentsOf: films)
+        view?.reloadTable()
+        view?.loaderStop()
+    }
+    
+    // MARK: - Network service with model
+    
+    private func getSearchResult(by keyword: String) {
         
-        view?.viewEndEditing()
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.view?.loaderStart()
-        }
-        
-        if let word = view?.searchBar.text {
-            view?.keyword = word.lowercased()
-        }
-        
-        RequestManager.shared.searchMovies(by: view!.keyword) { (result: Result<SearchFilmModel, Error>) in
+        model.searchMovies(by: keyword) { (result: Result<SearchModel, Error>) in
             switch result {
             case .success(let searchModel):
                 let film = searchModel.films
                 
                 DispatchQueue.main.async { [weak self] in
-                    self?.updateInfo(with: film,
-                                     sender: (self?.view?.requestButton)!)
+                    guard let strongView = self?.view else {
+                        return
+                    }
+                    self?.model.sectionTitle = "Поиск по запросу: \(strongView.keyword.capitalized)"
+                    self?.updateInfo(with: film)
                 }
             case .failure(let error):
                 print("Error:", error)
@@ -122,37 +118,18 @@ final class SearchListPresenter: SearchListPresenterProtocol {
     }
     
     private func getTopMovies() {
-        view?.viewEndEditing()
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.view?.loaderStart()
-        }
-        
-        RequestManager.shared.getTopMovies { (result: Result<SearchFilmModel, Error>) in
+        model.getTopMovies { (result: Result<SearchModel, Error>) in
             switch result {
             case .success(let searchModel):
                 let film = searchModel.films
                 
                 DispatchQueue.main.async { [weak self] in
-                    self?.updateInfo(with: film,
-                                     sender: (self?.view?.topMovieButton)!)
+                    self?.model.sectionTitle = "Популярные фильмы: "
+                    self?.updateInfo(with: film)
                 }
             case .failure(let error):
                 print("Error:", error)
             }
         }
-    }
-    
-    private func updateInfo(with films: [Film], sender: UIButton) {
-        if sender == view?.requestButton {
-            model!.sectionTitle = "Поиск по запросу: \(view!.keyword.capitalized)"
-        } else {
-            model?.sectionTitle = "Популярные фильмы"
-        }
-        
-        model?.filmsArray.removeAll()
-        model?.filmsArray.append(contentsOf: films)
-        view?.reloadTable()
-        view?.loaderStop()
     }
 }
