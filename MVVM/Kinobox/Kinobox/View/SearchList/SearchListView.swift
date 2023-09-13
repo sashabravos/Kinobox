@@ -2,7 +2,7 @@
 //  SearchListView.swift
 //  Kinobox
 //
-//  Created by Александра Кострова on 09.09.2023.
+//  Created by Александра Кострова on 12.09.2023.
 //
 
 import UIKit
@@ -12,14 +12,13 @@ final class SearchListView: UIViewController {
     
     // MARK: - Properties
     
-    lazy var keyword = ""
-    private let presenter: SearchListPresenterProtocol = SearchListPresenter()
+    private lazy var viewModel: SearchListViewModelProtocol = SearchListViewModel()
     
     // MARK: - UI Elements
     
     private lazy var requestSearchBar: UISearchBar = {
         let search = UISearchBar()
-        search.placeholder = "Введите слово для поиска"
+        search.placeholder = viewModel.placeholder
         search.barTintColor = Constants.Color.background
         search.searchTextField.textColor = Constants.Color.darkText
         search.searchTextField.font = Constants.Font.secondaryFont
@@ -29,7 +28,7 @@ final class SearchListView: UIViewController {
     
     private lazy var searchButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Поиск", for: .normal)
+        button.setTitle(viewModel.titleForRequestButton, for: .normal)
         button.setTitleColor(Constants.Color.lightText, for: .normal)
         button.backgroundColor = Constants.Color.searchButton
         button.titleLabel?.font = Constants.Font.primaryFont
@@ -43,7 +42,7 @@ final class SearchListView: UIViewController {
     
     private lazy var topFilmsButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Популярные фильмы", for: .normal)
+        button.setTitle(viewModel.titleForTopFilmsButton, for: .normal)
         button.setTitleColor(Constants.Color.lightText, for: .normal)
         button.backgroundColor = Constants.Color.topFilmsButton
         button.titleLabel?.font = Constants.Font.primaryFont
@@ -71,11 +70,35 @@ final class SearchListView: UIViewController {
         
         setSubviews()
         layoutSubViews()
-        presenter.setView(self)
-        presenter.loadTopMovies()
+        viewModelInstants()
+        popularButtonTapped()
+        viewModel.loadTopMovies()
     }
     
     // MARK: - Private Methods
+    
+    private func viewModelInstants() {
+        
+        viewModel.updateView = { [weak self] in
+            self?.tableView.reloadData()
+        }
+        
+        viewModel.loaderStart = {
+            DispatchQueue.main.async { [weak self] in
+                self?.activityIndicator.startAnimating()
+            }
+        }
+        
+        viewModel.loaderStop = {
+            DispatchQueue.main.async { [weak self] in
+                self?.activityIndicator.stopAnimating()
+            }
+        }
+        
+        viewModel.hideKeyboard = { [weak self] in
+            self?.view.endEditing(true)
+        }
+    }
     
     private func setSubviews() {
         tableView.dataSource = self
@@ -121,19 +144,11 @@ final class SearchListView: UIViewController {
     // MARK: - Buttons Actions
     
     @objc func searchButtonTapped() {
-        view.endEditing(true)
-        DispatchQueue.main.async { [weak self] in
-            self?.activityIndicator.startAnimating()
-        }
-        presenter.searchButtonTapped(with: keyword)
+        viewModel.searchButtonTapped(with: viewModel.keyword ?? "")
     }
     
     @objc func popularButtonTapped() {
-        view.endEditing(true)
-        DispatchQueue.main.async { [weak self] in
-            self?.activityIndicator.startAnimating()
-        }
-        presenter.popularButtonTapped()
+        viewModel.popularButtonTapped()
     }
 }
 
@@ -142,11 +157,11 @@ final class SearchListView: UIViewController {
 extension SearchListView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.numberOfRowsInSection()
+        viewModel.getNumberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        presenter.titleForHeaderInSection()
+        viewModel.getTitleForHeaderInSection()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -154,8 +169,8 @@ extension SearchListView: UITableViewDataSource {
             withIdentifier: FilmCellView.identifier,
             for: indexPath) as! FilmCellView
         
-        let film = presenter.getFilm(for: indexPath)
-        filmCell.presenter.configureCell(with: film)
+        let film = viewModel.getFilm(for: indexPath)
+        viewModel.configureCell(with: film, cell: filmCell)
         return filmCell
     }
 }
@@ -164,10 +179,11 @@ extension SearchListView: UITableViewDataSource {
 
 extension SearchListView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedFilm = presenter.getFilm(for: indexPath)
-        let detailInfo = DetailInfoView()
-        detailInfo.selectedFilmID = selectedFilm.filmId
-        self.present(detailInfo, animated: true)
+        let detailView = DetailInfoView()
+        viewModel.cellTapped(indexPath, view: detailView)
+        viewModel.showDetailScreen = { [weak self] in
+            self?.present(detailView, animated: true)
+        }
     }
 }
 
@@ -176,27 +192,15 @@ extension SearchListView: UITableViewDelegate {
 extension SearchListView: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // search by every letter
-        keyword = searchText.lowercased()
-        print(keyword)
-        presenter.searchButtonTapped(with: keyword)
+        viewModel.keyword = searchText.lowercased()
+        viewModel.searchFilmByLetter(with: viewModel.keyword!)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // press search button on keyboard
         if let word = searchBar.text {
-            keyword = word.lowercased()
-            presenter.searchButtonTapped(with: keyword)
+            viewModel.keyword = word.lowercased()
+            viewModel.searchButtonTapped(with: viewModel.keyword!)
         }
-    }
-}
-
-extension SearchListView: SearchListViewProtocol {
-    
-    func reloadTable() {
-        tableView.reloadData()
-    }
-    
-    func loaderStop() {
-        activityIndicator.stopAnimating()
     }
 }

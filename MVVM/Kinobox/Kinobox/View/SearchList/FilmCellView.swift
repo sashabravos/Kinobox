@@ -2,7 +2,7 @@
 //  FilmCellView.swift
 //  Kinobox
 //
-//  Created by Александра Кострова on 09.09.2023.
+//  Created by Александра Кострова on 12.09.2023.
 //
 
 import UIKit
@@ -11,12 +11,12 @@ import Kingfisher
 
 final class FilmCellView: UITableViewCell {
     
-// MARK: - Properties
+    // MARK: - Properties
     
     static let identifier = "FilmCell"
-    let presenter: FilmCellPresenterProtocol = FilmCellPresenter()
+    private lazy var viewModel: SearchListViewModelProtocol = SearchListViewModel()
     
-// MARK: - UI Elements
+    // MARK: - UI Elements
     
     private lazy var filmImageView: UIImageView = {
         let imageView = UIImageView()
@@ -44,7 +44,7 @@ final class FilmCellView: UITableViewCell {
         return stackView
     }()
     
-// MARK: - Initialisers
+    // MARK: - Initialisers
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,10 +56,9 @@ final class FilmCellView: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-// MARK: - Private Methods
+    // MARK: - Private Methods
     
     private func setupCell() {
-        presenter.setView(self)
         self.addSubview(stackView)
         self.backgroundColor = Constants.Color.background
     }
@@ -76,14 +75,13 @@ final class FilmCellView: UITableViewCell {
             make.width.equalTo(Constants.Constraints.cellImageWidth)
         }
     }
-}
-
-// MARK: - FilmCellViewProtocol
-
-extension FilmCellView: FilmCellViewProtocol {
-    func configure(with model: Film) {
-        filmName.text = model.nameRu
-        let imageURL = URL(string: model.posterUrl ?? String())
+    
+    // MARK: - Public methods
+    
+    public func configure(fileName: String,
+                          posterURL: URL) {
+        filmName.text = fileName
+        let imageURL = posterURL
         
         filmImageView.kf.indicatorType = .activity
         filmImageView.kf.setImage(

@@ -2,7 +2,7 @@
 //  SearchModel.swift
 //  Kinobox
 //
-//  Created by Александра Кострова on 12.09.2023.
+//  Created by Александра Кострова on 27.08.2023.
 //
 
 import Foundation
